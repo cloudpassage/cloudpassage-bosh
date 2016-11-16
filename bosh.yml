@@ -1,0 +1,67 @@
+---
+name: cp_test_3
+director_uuid: d7a9d557-c7f6-4239-8490-483aedda0b59
+
+releases:
+- name: cp
+  version: 0+dev.35
+
+networks:
+- name: default
+  type: manual
+  subnets:
+  - range: 10.0.0.0/24
+    reserved:
+      - 10.0.0.2 - 10.0.0.9
+    gateway: 10.0.0.1
+    dns: [10.0.0.2]
+    cloud_properties:
+      subnet: subnet-a61122d0
+- name: public
+  type: vip
+resource_pools:
+- name: default
+  stemcell:
+    name: bosh-aws-xen-ubuntu-trusty-go_agent
+    version: latest
+  network: default
+  cloud_properties:
+    instance_type: m3.xlarge
+    availability_zone: us-west-2a
+
+compilation:
+  workers: 2
+  network: default
+  cloud_properties: {instance_type: t2.medium, availability_zone: us-west-2a}
+update:
+  canaries: 1
+  canary_watch_time: 60000
+  update_watch_time: 60000
+  max_in_flight: 2
+
+jobs:
+- name: cp_halo
+  templates:
+  - name: cp_halo
+  instances: 1
+  resource_pool: default
+  networks:
+  - name: default
+    static_ip: [10.0.0.4]
+    default: [dns, gateway]
+    properties:
+      aws: &aws
+        access_key_id:  # <--- Replace with AWS Access Key ID
+        secret_access_key:  # <--- Replace with AWS Secret Key
+        default_key_name: bosh
+        #default_security_groups: [bosh]
+        region: us-west-2 # <--- Replace with Region
+
+cloud_provide:
+  template: {name: aws_cpi, release: bosh-aws-cpi}
+
+  mbus: "https://mbus:mbus-password@35.163.85.98:6868" # <--- Replace with Elastic IP
+
+  properties:
+    aws: *aws
+    agent: {mbus: "https://mbus:mbus-password@0.0.0.0:6868"}

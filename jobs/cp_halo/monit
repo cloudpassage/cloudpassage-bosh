@@ -1,0 +1,5 @@
+check process cp_halo
+  with pidfile /var/vcap/sys/run/cp_halo/install.pid
+  start program "/var/vcap/jobs/cp_halo/bin/monit_debugger cp_halo_ctl '/var/vcap/jobs/cp_halo/bin/ctl start'"
+  stop program "/var/vcap/jobs/cp_halo/bin/monit_debugger cp_halo_ctl '/var/vcap/jobs/cp_halo/bin/ctl stop'"
+  group vcap

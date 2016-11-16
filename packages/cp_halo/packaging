@@ -1,0 +1,10 @@
+# abort script on any command that exits with a non zero value
+set -e
+
+cp -r cp_halo/* ${BOSH_INSTALL_TARGET}
+
+cd ${BOSH_INSTALL_TARGET}
+
+#ls ${BOSH_INSTALL_TARGET}
+
+#./cp_halo/install.sh

@@ -1,0 +1,16 @@
+---
+packages:
+- name: cp_halo
+  version: f85f7f615a8c1734efc8633397d1929ebc559ac4
+  fingerprint: f85f7f615a8c1734efc8633397d1929ebc559ac4
+  sha1: 7940b37e389fbb738016a63c413f35d354da7d50
+  dependencies: []
+jobs:
+- name: cp_halo
+  version: 497f7441006ba2f9a02d10093869b28d7d3debc2
+  fingerprint: 497f7441006ba2f9a02d10093869b28d7d3debc2
+  sha1: 11eeb6842fd68a4156d3d7adfcbce5204e7dd631
+commit_hash: '00000000'
+uncommitted_changes: false
+name: cp
+version: 0+dev.17

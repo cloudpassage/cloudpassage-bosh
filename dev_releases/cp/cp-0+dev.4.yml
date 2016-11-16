@@ -1,0 +1,16 @@
+---
+packages:
+- name: cp
+  version: 16085647266364113643b8f4f9e321cd9aad76bb
+  fingerprint: 16085647266364113643b8f4f9e321cd9aad76bb
+  sha1: 613c60470a1ea55a01ee9bf304ddc3b5057cc24c
+  dependencies: []
+jobs:
+- name: install
+  version: 97987556a0ab81ccc56b41a6c5c09f7b864f9247
+  fingerprint: 97987556a0ab81ccc56b41a6c5c09f7b864f9247
+  sha1: e00fc20662d9b05323a29c6825b2377d0fe9b437
+commit_hash: '00000000'
+uncommitted_changes: false
+name: cp
+version: 0+dev.4
