@@ -5,6 +5,5 @@ cp -r cp_halo/* ${BOSH_INSTALL_TARGET}
 
 cd ${BOSH_INSTALL_TARGET}
 
-#ls ${BOSH_INSTALL_TARGET}
+export AGENT_KEY=$AGENT_KEY
 
-#./cp_halo/install.sh

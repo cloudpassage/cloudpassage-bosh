@@ -9,8 +9,6 @@ set -u # report the usage of uninitialized variables
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/cp_halo/helpers/ctl_setup.sh 'cp_halo'
 
-export PORT=${PORT:-5000}
-export LANG=en_US.UTF-8
 
 case $1 in
 
@@ -22,16 +20,8 @@ case $1 in
     curl https://production.packages.cloudpassage.com/cloudpassage.packages.key | sudo apt-key add - >> $LOG_DIR/$JOB_NAME.log 2>&1
     apt-get update > /dev/null >> $LOG_DIR/$JOB_NAME.log 2>&1
     apt-get -y install cphalo >> $LOG_DIR/$JOB_NAME.log 2>&1
-    /opt/cloudpassage/bin/configure --agent-key= --grid=https://grid.cloudpassage.com/grid >> $LOG_DIR/$JOB_NAME.log 2>&1
+    /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid >> $LOG_DIR/$JOB_NAME.log 2>&1
     /etc/init.d/cphalod start >> $LOG_DIR/$JOB_NAME.log 2>&1
-    #pid_guard $PIDFILE $JOB_NAME
-    #chown -R $RUNAS:$RUNAS $RUN_DIR $LOG_DIR
-
-    # store pid in $PIDFILE
-    #echo $$ > $PIDFILE
-    #exec chpst -u $RUNAS:$RUNAS \
-    #    /var/vcap/packages/cp_halo/install.sh
-    #     >>$LOG_DIR/$JOB_NAME.log 2>&1
 
     ;;
 

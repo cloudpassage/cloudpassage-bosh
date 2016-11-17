@@ -51,8 +51,8 @@ jobs:
     default: [dns, gateway]
     properties:
       aws: &aws
-        access_key_id:  # <--- Replace with AWS Access Key ID
-        secret_access_key:  # <--- Replace with AWS Secret Key
+        access_key_id: AKIAIYWJQ2UZMEYFFLEQ  # <--- Replace with AWS Access Key ID
+        secret_access_key: jFwJrIH3ZEXzQpOzbsel1z/4+02B86zKfSFuyBiQ  # <--- Replace with AWS Secret Key
         default_key_name: bosh
         #default_security_groups: [bosh]
         region: us-west-2 # <--- Replace with Region
