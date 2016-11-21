@@ -2,13 +2,15 @@
 
 
 RUN_DIR=/var/vcap/sys/run/cp_halo
+PIDFILE=$RUN_DIR/cphalo.pid
+
 RUNAS=vcap
+
 set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/cp_halo/helpers/ctl_setup.sh 'cp_halo'
-
 
 case $1 in
 
@@ -22,13 +24,14 @@ case $1 in
     apt-get -y install cphalo >> $LOG_DIR/$JOB_NAME.log 2>&1
     /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid >> $LOG_DIR/$JOB_NAME.log 2>&1
     /etc/init.d/cphalod start >> $LOG_DIR/$JOB_NAME.log 2>&1
-
+    pidof cphalo > $PIDFILE
     ;;
 
   stop)
     kill_and_wait $PIDFILE
 
     ;;
+
   *)
     echo "Usage: install_ctl {start|stop}"
 

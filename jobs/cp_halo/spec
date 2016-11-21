@@ -2,6 +2,11 @@
 name: cp_halo
 packages:
   - cp_halo
+
+properties:
+  cp_halo.agent_key:
+    description: agent register key
+
 templates:
   bin/ctl: bin/ctl
   bin/monit_debugger: bin/monit_debugger

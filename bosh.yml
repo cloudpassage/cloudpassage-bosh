@@ -1,38 +1,35 @@
 ---
-name: cp_test_3
-director_uuid: d7a9d557-c7f6-4239-8490-483aedda0b59
+name: halo
+director_uuid: 8720c964-252d-41ed-8543-eb40b733a633
 
 releases:
 - name: cp
-  version: 0+dev.35
+  version: 0+dev.63
 
 networks:
 - name: default
-  type: manual
-  subnets:
-  - range: 10.0.0.0/24
-    reserved:
-      - 10.0.0.2 - 10.0.0.9
-    gateway: 10.0.0.1
-    dns: [10.0.0.2]
-    cloud_properties:
-      subnet: subnet-a61122d0
-- name: public
-  type: vip
+  type: dynamic
+  cloud_properties:
+    subnet: subnet-cf955197
+
 resource_pools:
 - name: default
+  network: default
   stemcell:
     name: bosh-aws-xen-ubuntu-trusty-go_agent
     version: latest
-  network: default
   cloud_properties:
-    instance_type: m3.xlarge
-    availability_zone: us-west-2a
+    instance_type: m3.medium
+    availability_zone: us-west-1b
+    auto_assign_public_ip: true
 
 compilation:
   workers: 2
   network: default
-  cloud_properties: {instance_type: t2.medium, availability_zone: us-west-2a}
+  cloud_properties:
+    availability_zone: us-west-1b
+    instance_type: m3.medium
+
 update:
   canaries: 1
   canary_watch_time: 60000
@@ -47,21 +44,14 @@ jobs:
   resource_pool: default
   networks:
   - name: default
-    static_ip: [10.0.0.4]
-    default: [dns, gateway]
-    properties:
-      aws: &aws
-        access_key_id: AKIAIYWJQ2UZMEYFFLEQ  # <--- Replace with AWS Access Key ID
-        secret_access_key: jFwJrIH3ZEXzQpOzbsel1z/4+02B86zKfSFuyBiQ  # <--- Replace with AWS Secret Key
-        default_key_name: bosh
-        #default_security_groups: [bosh]
-        region: us-west-2 # <--- Replace with Region
-
-cloud_provide:
-  template: {name: aws_cpi, release: bosh-aws-cpi}
-
-  mbus: "https://mbus:mbus-password@35.163.85.98:6868" # <--- Replace with Elastic IP
-
   properties:
-    aws: *aws
-    agent: {mbus: "https://mbus:mbus-password@0.0.0.0:6868"}
+    aws:
+      access_key_id: AKIAIZLGLBCF7G6LQFCA # <--- Replace with AWS Access Key ID
+      secret_access_key: 9+tOKHHKsk77GGkCVVN50nv7/uG72xZ1JURgzpom # <--- Replace with AWS Secret Key
+      default_key_name: jlee
+      default_security_groups: [jlee_bosh]
+      region: us-west-1  # <--- Replace with Region
+
+properties:
+  cp_halo:
+    agent_key: '422fb79572e214b83523f6fd56b8e898'
