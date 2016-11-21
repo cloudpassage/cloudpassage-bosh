@@ -1,9 +1,7 @@
 #!/bin/bash
 
-
 RUN_DIR=/var/vcap/sys/run/cp_halo
 PIDFILE=$RUN_DIR/cphalo.pid
-
 RUNAS=vcap
 
 set -e # exit immediately if a simple command exits with a non-zero status
