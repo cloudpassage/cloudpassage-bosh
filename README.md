@@ -16,12 +16,12 @@ Here is a sample manifest that utilizes AWS.
 
 ```
 ---
-name: halo
+name: halo # <--- Replace with your own deploy name
 director_uuid: '' # <--- Replace with Director UUID
 
 releases:
-- name: cp
-  version: '' # <--- Replace with your own release number
+- name: cloudpassage
+  version: '' # <--- Replace with the latest release version
 
 networks:
 - name: default
@@ -33,18 +33,18 @@ resource_pools:
 - name: default
   network: default
   stemcell:
-    name: '' <--- Replace with Stemcell name
+    name: '' # <--- Replace with Stemcell name
     version: latest
   cloud_properties:
     instance_type: m3.medium
-    availability_zone: us-west-1b
+    availability_zone: # <--- Replace with your AWS region, ie. us-west-1b
     auto_assign_public_ip: true
 
 compilation:
   workers: 2
   network: default
   cloud_properties:
-    availability_zone: us-west-1b
+    availability_zone: # <--- Replace with your AWS region, ie. us-west-1b
     instance_type: m3.medium
 
 update:
@@ -79,19 +79,16 @@ properties:
 
 After the manifest content is fully populated, the next step is to create a release.
 
-1. `bosh create release` Be sure to update the manifest's version after creating a release.
-2. `bosh upload release` Upload the generated release to the director.
-3. `bosh releases` Check the release has been successfully uploaded.
+1. `bosh upload release releases/cloudpassage/cloudpassage-2.yml` Upload the generated release to the director.
 
 ```
 Acting as user 'admin' on 'my-bosh'
 
-+------+-----------+-------------+
-| Name | Versions  | Commit Hash |
-+------+-----------+-------------+
-| cp   | 0+dev.82  | 0245027e+   |
-|      | 0+dev.83* | 0245027e+   |
-+------+-----------+-------------+
++----------------+-----------+-------------+
+| Name           | Versions  | Commit Hash |
++----------------+-----------+-------------+
+| cloudpassage   | 2         | 0245027e+   |
++----------------+-----------+-------------+
 (*) Currently deployed
 (+) Uncommitted changes
 
