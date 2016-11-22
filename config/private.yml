@@ -1,0 +1,6 @@
+---
+blobstore:
+  s3:
+    access_key_id: AKIAIYWJQ2UZMEYFFLEQ
+    bucket_name: bosh-cp-release
+    secret_access_key: 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
