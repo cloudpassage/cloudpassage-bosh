@@ -78,15 +78,10 @@ properties:
 #### Create BOSH Release
 
 After the manifest content is fully populated, the next step is to create a release.
-1. `bosh create release`
 
-Be sure to update the manifest's version after creating a release.
-
-Then upload the generated release to the director:
-2. `bosh upload release`
-
-Check the release has been successfully uploaded by:
-3. `bosh releases`
+1. `bosh create release` Be sure to update the manifest's version after creating a release.
+2. `bosh upload release` Then upload the generated release to the director.
+3. `bosh releases` Check the release has been successfully uploaded.
 
 ```
 Acting as user 'admin' on 'my-bosh'
@@ -105,25 +100,16 @@ Releases total: 1
 
 ### Set Deployment Manifest
 
-Update the director_uuid value in the manifest.yml with the value from:
-
-1. `bosh status --uuid`
-
-Set the deployment manifest:
-
-2. `bosh deployment manifest.yml`
+1. `bosh status --uuid` Update the director_uuid value in the manifest.yml with the value
+2. `bosh deployment manifest.yml` Set the deployment manifest
 
 ### Upload stemcell
 
 Official BOSH stemcells are maintained with security updates at bosh.io.
 
-Upload stemcell to Director:
 
-1. `bosh upload <stemcell.tgz>`
-
-See Uploaded Stemcells:
-
-2. `bosh stemcells`
+1. `bosh upload <stemcell.tgz>` Upload stemcell to Director:
+2. `bosh stemcells` See Uploaded Stemcells:
 
 ```
 Acting as user 'admin' on 'my-bosh'
