@@ -1,1 +1,173 @@
-# cloudpassage-bosh
+#### BOSH Halo Release
+
+This is a release repository for BOSH that deploys the Halo Agent application.
+
+#### Prerequisites: (if you dont already have a BOSH environment initialized):
+
+1. Here's a setup tutorial for AWS (https://bosh.io/docs/init-aws.html)
+2. Install BOSH CLI gem `gem install bosh_cli`
+3. Let the CLI know about bosh Director `bosh target <director_ip_address>` (use admin/admin to log in)
+
+#### Getting Started:
+
+Each BOSH deployment needs to provide a specially structured configuration file - deployment manifest.
+
+Here is a sample manifest that utilizes AWS.
+
+```
+---
+name: halo
+director_uuid: '' # <--- Replace with Director UUID
+
+releases:
+- name: cp
+  version: '' # <--- Replace with your own release number
+
+networks:
+- name: default
+  type: dynamic
+  cloud_properties:
+    subnet: '' # <--- Replace with AWS subnet id
+
+resource_pools:
+- name: default
+  network: default
+  stemcell:
+    name: '' <--- Replace with Stemcell name
+    version: latest
+  cloud_properties:
+    instance_type: m3.medium
+    availability_zone: us-west-1b
+    auto_assign_public_ip: true
+
+compilation:
+  workers: 2
+  network: default
+  cloud_properties:
+    availability_zone: us-west-1b
+    instance_type: m3.medium
+
+update:
+  canaries: 1
+  canary_watch_time: 60000-180000
+  update_watch_time: 60000-180000
+  max_in_flight: 2
+
+jobs:
+- name: cp_halo
+  templates:
+  - name: cp_halo
+  instances: 1
+  resource_pool: default
+  networks:
+  - name: default
+  properties:
+    aws:
+      access_key_id: '' # <--- Replace with AWS Access Key ID
+      secret_access_key: '' # <--- Replace with AWS Secret Key
+      default_key_name: '' # <--- Replace with SSH key name
+      default_security_groups: [] # <--- Replace with AWS Security Group name
+      region: ''  # <--- Replace with Region, ie. us-west-1
+
+properties:
+  cp_halo:
+    agent_key: '' # <--- Replace with Halo Agent Key
+```
+
+
+#### Create BOSH Release
+
+After the manifest content is fully populated, the next step is to create a release.
+1. `bosh create release`
+
+Be sure to update the manifest's version after creating a release.
+
+Then upload the generated release to the director:
+2. `bosh upload release`
+
+Check the release has been successfully uploaded by:
+3. `bosh releases`
+
+```
+Acting as user 'admin' on 'my-bosh'
+
++------+-----------+-------------+
+| Name | Versions  | Commit Hash |
++------+-----------+-------------+
+| cp   | 0+dev.82  | 0245027e+   |
+|      | 0+dev.83* | 0245027e+   |
++------+-----------+-------------+
+(*) Currently deployed
+(+) Uncommitted changes
+
+Releases total: 1
+```
+
+### Set Deployment Manifest
+
+Update the director_uuid value in the manifest.yml with the value from:
+
+1. `bosh status --uuid`
+
+Set the deployment manifest:
+
+2. `bosh deployment manifest.yml`
+
+### Upload stemcell
+
+Official BOSH stemcells are maintained with security updates at bosh.io.
+
+Upload stemcell to Director:
+
+1. `bosh upload <stemcell.tgz>`
+
+See Uploaded Stemcells:
+
+2. `bosh stemcells`
+
+```
+Acting as user 'admin' on 'my-bosh'
+
++---------------------------------------------+---------------+---------+--------------+
+| Name                                        | OS            | Version | CID          |
++---------------------------------------------+---------------+---------+--------------+
+| bosh-aws-xen-centos-7-go_agent              | centos-7      | 3312    | ami-b33b6fd3 |
+| bosh-aws-xen-ubuntu-trusty-go_agent         | ubuntu-trusty | 3309*   | ami-ff683d9f |
+| bosh-warden-boshlite-ubuntu-trusty-go_agent | ubuntu-trusty | 3309    | ami-856e3be5 |
++---------------------------------------------+---------------+---------+--------------+
+
+(*) Currently in-use
+
+Stemcells total: 3
+```
+
+
+#### Deploy
+
+1. `bosh deploy`
+
+```
+Deploying
+---------
+
+Director task 729
+Deprecation: Ignoring cloud config. Manifest contains 'networks' section.
+
+  Started preparing deployment > Preparing deployment. Done (00:00:00)
+
+  Started preparing package compilation > Finding packages to compile. Done (00:00:00)
+
+  Started compiling packages > cp_halo/99d59c7894951c76cf497dfd9514e887b209c710. Done (00:02:41)
+
+  Started creating missing vms > cp_halo/654ebee1-ba0a-4016-9e53-dd5942528f00 (0). Done (00:01:25)
+
+  Started updating instance cp_halo > cp_halo/654ebee1-ba0a-4016-9e53-dd5942528f00 (0) (canary). Done (00:01:57)
+
+Task 729 done
+
+Started   2016-11-22 19:07:33 UTC
+Finished  2016-11-22 19:13:37 UTC
+Duration  00:06:04
+
+Deployed 'halo' to 'my-bosh'
+```
