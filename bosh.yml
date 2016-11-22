@@ -4,7 +4,7 @@ director_uuid: 8720c964-252d-41ed-8543-eb40b733a633
 
 releases:
 - name: cp
-  version: 0+dev.65
+  version: 0+dev.83
 
 networks:
 - name: default
@@ -17,6 +17,7 @@ resource_pools:
   network: default
   stemcell:
     name: bosh-aws-xen-ubuntu-trusty-go_agent
+    # name: bosh-aws-xen-centos-7-go_agent
     version: latest
   cloud_properties:
     instance_type: m3.medium

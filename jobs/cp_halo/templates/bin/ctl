@@ -2,7 +2,6 @@
 
 RUN_DIR=/var/vcap/sys/run/cp_halo
 PIDFILE=$RUN_DIR/cphalo.pid
-RUNAS=vcap
 
 set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
@@ -10,9 +9,7 @@ set -u # report the usage of uninitialized variables
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/cp_halo/helpers/ctl_setup.sh 'cp_halo'
 
-case $1 in
-
-  start)
+install_deb() {
     echo 'deb https://production.packages.cloudpassage.com/debian debian main' >> cloudpassage.list
     mv cloudpassage.list  /etc/apt/sources.list.d/. >> $LOG_DIR/$JOB_NAME.log 2>&1
     apt-get -y install curl >> $LOG_DIR/$JOB_NAME.log 2>&1
@@ -23,6 +20,28 @@ case $1 in
     /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid >> $LOG_DIR/$JOB_NAME.log 2>&1
     /etc/init.d/cphalod start >> $LOG_DIR/$JOB_NAME.log 2>&1
     pidof cphalo > $PIDFILE
+}
+
+install_yum() {
+    echo -e '[cloudpassage]\nname=CloudPassage\nbaseurl=https://production.packages.cloudpassage.com/redhat/$basearch\ngpgcheck=1' | sudo tee /etc/yum.repos.d/cloudpassage.repo > /dev/null >> $LOG_DIR/$JOB_NAME.log 2>&1
+    sudo rpm --import https://production.packages.cloudpassage.com/cloudpassage.packages.key >> $LOG_DIR/$JOB_NAME.log 2>&1
+    sudo yum list >> $LOG_DIR/$JOB_NAME.log 2>&1
+    sudo yum -y install cphalo > /dev/null >> $LOG_DIR/$JOB_NAME.log 2>&1
+    sudo /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid >> $LOG_DIR/$JOB_NAME.log 2>&1
+    sudo /etc/init.d/cphalod start >> $LOG_DIR/$JOB_NAME.log 2>&1
+    pidof cphalo > $PIDFILE
+}
+
+case $1 in
+
+  start)
+    string="$(cat /etc/*-release | grep -w ID)"
+    if [[ $string == *"ubuntu"* || $string == *"debian"* ]]; then
+        install_deb
+    else
+        install_yum
+    fi
+
     ;;
 
   stop)
