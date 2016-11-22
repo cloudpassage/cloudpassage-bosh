@@ -80,7 +80,7 @@ properties:
 After the manifest content is fully populated, the next step is to create a release.
 
 1. `bosh create release` Be sure to update the manifest's version after creating a release.
-2. `bosh upload release` Then upload the generated release to the director.
+2. `bosh upload release` Upload the generated release to the director.
 3. `bosh releases` Check the release has been successfully uploaded.
 
 ```
