@@ -85,6 +85,7 @@ jobs:
 properties:
   cp_halo:
     agent_key: '' # <--- Replace with Halo Agent Key
+    aws_server_label: 0 # <--- if want to replace server_label with aws account id and instance id
 ```
 
 
