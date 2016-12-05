@@ -5,7 +5,7 @@ This is a release repository for BOSH that deploys the Halo Agent application.
 #### RELEASE 'cloudpassage'
 
 ```
-url: https://github.com/mong2/cloudpassage-bosh/raw/feature/bosh_aws_server_label/releases/cloudpassage/cloudpassage-3.tgz
+url: https://github.com/mong2/cloudpassage-bosh/raw/master/releases/cloudpassage/cloudpassage-3.tgz
 sha1: ff9798647db51305ebb216df026d162e208da8a2
 ```
 
