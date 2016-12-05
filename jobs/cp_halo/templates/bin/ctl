@@ -10,6 +10,7 @@ set -u # report the usage of uninitialized variables
 source /var/vcap/jobs/cp_halo/helpers/ctl_setup.sh 'cp_halo'
 
 install_deb() {
+    server_label=$1
     echo 'deb https://production.packages.cloudpassage.com/debian debian main' >> cloudpassage.list
     mv cloudpassage.list  /etc/apt/sources.list.d/. >> $LOG_DIR/$JOB_NAME.log 2>&1
     apt-get -y install curl >> $LOG_DIR/$JOB_NAME.log 2>&1
@@ -17,17 +18,18 @@ install_deb() {
     curl https://production.packages.cloudpassage.com/cloudpassage.packages.key | sudo apt-key add - >> $LOG_DIR/$JOB_NAME.log 2>&1
     apt-get update > /dev/null >> $LOG_DIR/$JOB_NAME.log 2>&1
     apt-get -y install cphalo >> $LOG_DIR/$JOB_NAME.log 2>&1
-    /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid >> $LOG_DIR/$JOB_NAME.log 2>&1
+    /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid --server-label=$server_label >> $LOG_DIR/$JOB_NAME.log 2>&1
     /etc/init.d/cphalod start >> $LOG_DIR/$JOB_NAME.log 2>&1
     pidof cphalo > $PIDFILE
 }
 
 install_yum() {
+    server_label=$1
     echo -e '[cloudpassage]\nname=CloudPassage\nbaseurl=https://production.packages.cloudpassage.com/redhat/$basearch\ngpgcheck=1' | sudo tee /etc/yum.repos.d/cloudpassage.repo > /dev/null >> $LOG_DIR/$JOB_NAME.log 2>&1
     sudo rpm --import https://production.packages.cloudpassage.com/cloudpassage.packages.key >> $LOG_DIR/$JOB_NAME.log 2>&1
     sudo yum list >> $LOG_DIR/$JOB_NAME.log 2>&1
     sudo yum -y install cphalo > /dev/null >> $LOG_DIR/$JOB_NAME.log 2>&1
-    sudo /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid >> $LOG_DIR/$JOB_NAME.log 2>&1
+    sudo /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid --server-label=$server_label >> $LOG_DIR/$JOB_NAME.log 2>&1
     sudo /etc/init.d/cphalod start >> $LOG_DIR/$JOB_NAME.log 2>&1
     pidof cphalo > $PIDFILE
 }
@@ -35,11 +37,14 @@ install_yum() {
 case $1 in
 
   start)
-    string="$(cat /etc/*-release | grep -w ID)"
-    if [[ $string == *"ubuntu"* || $string == *"debian"* ]]; then
-        install_deb
+    platform="$(cat /etc/*-release | grep -w ID)"
+    account_id=$(curl -fs http://169.254.169.254/latest/dynamic/instance-identity/document/ | python -c "import json,sys;obj=json.load(sys.stdin);print obj['accountId']")
+    instance_id=$(curl -fs http://169.254.169.254/latest/dynamic/instance-identity/document/ | python -c "import json,sys;obj=json.load(sys.stdin);print obj['instanceId']")
+    server_label=$account_id\_$instance_id
+    if [[ $platform == *"ubuntu"* || $platform == *"debian"* ]]; then
+        install_deb $server_label
     else
-        install_yum
+        install_yum $server_label
     fi
 
     ;;
