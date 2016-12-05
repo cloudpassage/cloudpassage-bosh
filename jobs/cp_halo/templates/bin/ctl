@@ -38,9 +38,14 @@ case $1 in
 
   start)
     platform="$(cat /etc/*-release | grep -w ID)"
-    account_id=$(curl -fs http://169.254.169.254/latest/dynamic/instance-identity/document/ | python -c "import json,sys;obj=json.load(sys.stdin);print obj['accountId']")
-    instance_id=$(curl -fs http://169.254.169.254/latest/dynamic/instance-identity/document/ | python -c "import json,sys;obj=json.load(sys.stdin);print obj['instanceId']")
-    server_label=$account_id\_$instance_id
+    if [ $AWS_SERVERL_LABEL] ; then
+        account_id=$(curl -fs http://169.254.169.254/latest/dynamic/instance-identity/document/ | python -c "import json,sys;obj=json.load(sys.stdin);print obj['accountId']")
+        instance_id=$(curl -fs http://169.254.169.254/latest/dynamic/instance-identity/document/ | python -c "import json,sys;obj=json.load(sys.stdin);print obj['instanceId']")
+        server_label=$account_id\_$instance_id
+    else
+        server_label=`hostname`
+    fi  
+    
     if [[ $platform == *"ubuntu"* || $platform == *"debian"* ]]; then
         install_deb $server_label
     else
