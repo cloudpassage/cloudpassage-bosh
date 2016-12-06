@@ -28,7 +28,7 @@ Each BOSH deployment needs to provide a specially structured configuration file 
 Required Halo configuration variables to put into the manifest:
 
 1. agent_key=agent_key (value of your agent key)
-2. aws_server_label= (0 or 1, 0 to use accountId_instanceId, 1 to use default server hostname)
+2. aws_server_label=0
 
 Here is a sample manifest that utilizes AWS.
 
@@ -90,7 +90,7 @@ jobs:
 properties:
   cp_halo:
     agent_key: '' # <--- Replace with Halo Agent Key
-    aws_server_label: 0 # <--- if want to replace server_label with aws account id and instance id
+    aws_server_label: 0
 ```
 
 
