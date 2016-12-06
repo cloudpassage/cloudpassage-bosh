@@ -25,6 +25,11 @@ bosh upload release releases/cloudpassage/cloudpassage-3.tgz
 
 Each BOSH deployment needs to provide a specially structured configuration file - deployment manifest.
 
+Required Halo configuration variables to put into the manifest:
+
+1. agent_key=agent_key (value of your agent key)
+2. aws_server_label= (0 or 1, 0 to use accountId_instanceId, 1 to use default server hostname)
+
 Here is a sample manifest that utilizes AWS.
 
 ```
