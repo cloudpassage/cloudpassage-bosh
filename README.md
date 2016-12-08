@@ -173,3 +173,9 @@ Duration  00:06:04
 
 Deployed 'halo' to 'my-bosh'
 ```
+
+<!---
+
+#CPTAGS:community-supported archive
+
+-->
