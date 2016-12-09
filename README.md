@@ -177,5 +177,5 @@ Deployed 'halo' to 'my-bosh'
 <!---
 
 #CPTAGS:community-supported archive
-
+#TBICON:images/partner-supported.png
 -->
