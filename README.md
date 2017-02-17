@@ -12,7 +12,7 @@ sha1: ff9798647db51305ebb216df026d162e208da8a2
 or
 
 ```
-bosh upload release releases/cloudpassage/cloudpassage-3.tgz
+bosh upload release releases/cloudpassage/cloudpassage-4.tgz
 ```
 
 #### Prerequisites: (if you dont already have a BOSH environment initialized):
@@ -29,6 +29,10 @@ Required Halo configuration variables to put into the manifest:
 
 1. agent_key=agent_key (value of your agent key)
 2. aws_server_label=0
+
+Optional Halo configuration variable:
+
+1. server_tag=
 
 Here is a sample manifest that utilizes AWS.
 
@@ -91,6 +95,7 @@ properties:
   cp_halo:
     agent_key: '' # <--- Replace with Halo Agent Key
     aws_server_label: 0
+    server_tag: '' # <--- Replace with optional Halo server tag
 ```
 
 

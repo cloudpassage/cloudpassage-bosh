@@ -6,9 +6,11 @@ packages:
 properties:
   cp_halo.agent_key:
     description: agent register key
+  cp_halo.server_tag:
+    description: agent server tag
   cp_halo.aws_server_label:
     description: use the combination of aws account id and instance id as server_label. Takes (True/False)
-    default: 1 
+    default: 1
 
 templates:
   bin/ctl: bin/ctl

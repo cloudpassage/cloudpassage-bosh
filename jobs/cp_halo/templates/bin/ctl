@@ -18,7 +18,7 @@ install_deb() {
     curl https://production.packages.cloudpassage.com/cloudpassage.packages.key | sudo apt-key add - >> $LOG_DIR/$JOB_NAME.log 2>&1
     apt-get update > /dev/null >> $LOG_DIR/$JOB_NAME.log 2>&1
     apt-get -y install cphalo >> $LOG_DIR/$JOB_NAME.log 2>&1
-    /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid --server-label=$server_label >> $LOG_DIR/$JOB_NAME.log 2>&1
+    /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid --server-label=$server_label $tag >> $LOG_DIR/$JOB_NAME.log 2>&1
     /etc/init.d/cphalod start >> $LOG_DIR/$JOB_NAME.log 2>&1
     pidof cphalo > $PIDFILE
 }
@@ -29,7 +29,7 @@ install_yum() {
     sudo rpm --import https://production.packages.cloudpassage.com/cloudpassage.packages.key >> $LOG_DIR/$JOB_NAME.log 2>&1
     sudo yum list >> $LOG_DIR/$JOB_NAME.log 2>&1
     sudo yum -y install cphalo > /dev/null >> $LOG_DIR/$JOB_NAME.log 2>&1
-    sudo /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid --server-label=$server_label >> $LOG_DIR/$JOB_NAME.log 2>&1
+    sudo /opt/cloudpassage/bin/configure --agent-key=$AGENT_KEY --grid=https://grid.cloudpassage.com/grid --server-label=$server_label $tag >> $LOG_DIR/$JOB_NAME.log 2>&1
     sudo /etc/init.d/cphalod start >> $LOG_DIR/$JOB_NAME.log 2>&1
     pidof cphalo > $PIDFILE
 }
@@ -46,10 +46,16 @@ case $1 in
         server_label="$(hostname)"
     fi
 
-    if [[ $platform == *"ubuntu"* || $platform == *"debian"* ]]; then
-        install_deb $server_label
+    if [ -z "$SERVER_TAG" ] ; then
+        tag=""
     else
-        install_yum $server_label
+        tag="--tag=$SERVER_TAG"
+    fi
+
+    if [[ $platform == *"ubuntu"* || $platform == *"debian"* ]]; then
+        install_deb $server_label $tag
+    else
+        install_yum $server_label $tag
     fi
 
     ;;
