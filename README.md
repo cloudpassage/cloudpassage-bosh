@@ -12,7 +12,7 @@ sha1: ff9798647db51305ebb216df026d162e208da8a2
 or
 
 ```
-bosh upload release releases/cloudpassage/cloudpassage-3.tgz
+bosh upload release releases/cloudpassage/cloudpassage-4.tgz
 ```
 
 #### Prerequisites: (if you dont already have a BOSH environment initialized):
@@ -95,6 +95,7 @@ properties:
   cp_halo:
     agent_key: '' # <--- Replace with Halo Agent Key
     aws_server_label: 0
+    server_tag: '' # <--- Replace with optional Halo server tag
 ```
 
 
