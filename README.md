@@ -30,6 +30,9 @@ Required Halo configuration variables to put into the manifest:
 1. agent_key=agent_key (value of your agent key)
 2. aws_server_label=0
 
+Optional Halo configuration variable:
+1. server_tag=
+
 Here is a sample manifest that utilizes AWS.
 
 ```
