@@ -10,7 +10,10 @@ properties:
     description: agent server tag
   cp_halo.aws_server_label:
     description: use the combination of aws account id and instance id as server_label. Takes (True/False)
-    default: 1
+    default:
+  cp_halo.binary_install:
+    description: If set to 1, bosh will use binaries to run halo
+    default: 0
 
 templates:
   bin/ctl: bin/ctl
@@ -18,3 +21,4 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  bin/init.d: bin/cphalod

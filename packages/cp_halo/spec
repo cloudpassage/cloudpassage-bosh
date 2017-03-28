@@ -1,5 +1,5 @@
 ---
 name: cp_halo
-
+dependencies: []
 files:
-  - cp_halo
+- cp_halo/cloudpassage.tgz
