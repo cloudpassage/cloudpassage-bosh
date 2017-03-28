@@ -10,7 +10,7 @@ properties:
     description: agent server tag
   cp_halo.aws_server_label:
     description: use the combination of aws account id and instance id as server_label. Takes (True/False)
-    default:
+    default: 2
   cp_halo.binary_install:
     description: If set to 1, bosh will use binaries to run halo
     default: 0
