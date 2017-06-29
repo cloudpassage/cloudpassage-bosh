@@ -12,7 +12,7 @@ sha1: e3bb073ba8953531eb9089cda3652b0d2dcb43c2
 or
 
 ```
-bosh upload release releases/cloudpassage/cloudpassage-4.tgz
+bosh upload release releases/cloudpassage/cloudpassage-5.tgz
 ```
 
 #### Prerequisites: (if you dont already have a BOSH environment initialized):
