@@ -11,6 +11,8 @@ properties:
   cp_halo.aws_server_label:
     description: use the combination of aws account id and instance id as server_label. Takes (True/False)
     default: 1
+  cp_halo.azure_id:
+    description: use the combination of azure id and hostname as server label. Takes azure id.
 
 templates:
   bin/ctl: bin/ctl

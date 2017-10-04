@@ -5,14 +5,14 @@ This is a release repository for BOSH that deploys the Halo Agent application.
 #### RELEASE 'cloudpassage'
 
 ```
-url: https://github.com/cloudpassage/cloudpassage-bosh/raw/master/releases/cloudpassage/cloudpassage-5.tgz
-sha1: e3bb073ba8953531eb9089cda3652b0d2dcb43c2
+url: https://github.com/cloudpassage/cloudpassage-bosh/raw/master/releases/cloudpassage/cloudpassage-6.tgz
+sha1: 07ae6865ecbc043985aa0aa8539e7dd761ae46a8
 ```
 
 or
 
 ```
-bosh upload release releases/cloudpassage/cloudpassage-5.tgz
+bosh upload release releases/cloudpassage/cloudpassage-6.tgz
 ```
 
 #### Prerequisites: (if you dont already have a BOSH environment initialized):
@@ -33,6 +33,7 @@ Required Halo configuration variables to put into the manifest:
 Optional Halo configuration variable:
 
 1. server_tag=
+2. azure_id: ''
 
 Here is a sample manifest that utilizes AWS.
 
@@ -95,6 +96,7 @@ properties:
   cp_halo:
     agent_key: '' # <--- Replace with Halo Agent Key
     aws_server_label: 0
+    azure_id: ''
     server_tag: '' # <--- Replace with optional Halo server tag
 ```
 

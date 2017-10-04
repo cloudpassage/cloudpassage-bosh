@@ -42,6 +42,9 @@ case $1 in
         account_id=$(curl -fs http://169.254.169.254/latest/dynamic/instance-identity/document/ | python -c "import json,sys;obj=json.load(sys.stdin);print obj['accountId']")
         instance_id=$(curl -fs http://169.254.169.254/latest/dynamic/instance-identity/document/ | python -c "import json,sys;obj=json.load(sys.stdin);print obj['instanceId']")
         server_label=$account_id\_$instance_id
+    elif [ $AZURE_ID != '' ] ; then
+        hostname="$(hostname)"
+        server_label=$AZURE_ID\_$hostname
     else
         server_label="$(hostname)"
     fi
