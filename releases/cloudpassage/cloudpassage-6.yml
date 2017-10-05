@@ -1,0 +1,15 @@
+name: cloudpassage
+version: "6"
+commit_hash: 14d4bbc
+uncommitted_changes: true
+jobs:
+- name: cp_halo
+  version: 67742a71c6ee859a638915976b53b8e626565960
+  fingerprint: 67742a71c6ee859a638915976b53b8e626565960
+  sha1: e7143a963dcf5e295b9480c10ef4de22fcdd2957
+packages:
+- name: cp_halo
+  version: 74c99105a6928248fb1cc187b0fa7b066cd4f952
+  fingerprint: 74c99105a6928248fb1cc187b0fa7b066cd4f952
+  sha1: 101e401571345b7380a39ba1b36bdd83c6dde5d4
+  dependencies: []
